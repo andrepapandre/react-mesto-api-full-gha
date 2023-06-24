@@ -51,6 +51,9 @@ export class Apic {
   renderCards() {
     return fetch(this.url + "/cards", {
       method: "GET",
+      headers: {
+        authorization: token,
+      },
     }).then((res) => {
       return this._processingServerResponse(res);
     });
