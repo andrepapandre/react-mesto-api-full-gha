@@ -1,10 +1,9 @@
-export const baseUrl = "https://andrepapandre.nomoredomains.work";
-
-export const apiConfig = { baseUrl: baseUrl };
+import { env } from "process";
 
 export class Apic {
-  constructor({ baseUrl }) {
+  constructor(baseUrl, token) {
     this.url = baseUrl;
+    this.headers = token;
   }
 
   _processingServerResponse(res) {
@@ -14,6 +13,9 @@ export class Apic {
   getUserInfo() {
     return fetch(this.url + "/users/me", {
       method: "GET",
+      headers: {
+        authorization: this.headers,
+      },
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -23,6 +25,7 @@ export class Apic {
     return fetch(this.url + "/users/me", {
       method: "PATCH",
       headers: {
+        authorization: token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -38,6 +41,7 @@ export class Apic {
     return fetch(this.url + "/users/me/avatar", {
       method: "PATCH",
       headers: {
+        authorization: this.headers,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -52,7 +56,7 @@ export class Apic {
     return fetch(this.url + "/cards", {
       method: "GET",
       headers: {
-        authorization: token,
+        authorization: this.headers,
       },
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -63,6 +67,7 @@ export class Apic {
     return fetch(this.url + "/cards", {
       method: "POST",
       headers: {
+        authorization: this.headers,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -77,6 +82,9 @@ export class Apic {
   deleteCard(id) {
     return fetch(this.url + "/cards/" + id, {
       method: "DELETE",
+      headers: {
+        authorization: this.headers,
+      },
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -85,6 +93,10 @@ export class Apic {
   likeCard(idCard) {
     return fetch(this.url + "/cards/" + idCard + "/likes", {
       method: "PUT",
+      headers: {
+        authorization: this.headers,
+        "Content-Type": "application/json",
+      },
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -94,6 +106,7 @@ export class Apic {
     return fetch(this.url + "/cards/" + idCard + "/likes", {
       method: "DELETE",
       headers: {
+        authorization: this.headers,
         "Content-Type": "application/json",
       },
     }).then((res) => {
@@ -101,5 +114,6 @@ export class Apic {
     });
   }
 }
+const token = ;
 
-export const api = new Apic(apiConfig);
+export const api = new Apic("https://andrepapandre.nomoredomains.work", token);
