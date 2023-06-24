@@ -1,0 +1,16 @@
+.header__auth {
+  color: #ffffff;
+  margin-top: 20px;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  text-align: right;
+  line-height: 22px;
+}

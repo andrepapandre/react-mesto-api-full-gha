@@ -1,0 +1,20 @@
+.popup__save {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    color: white;
+    margin-top: 14px;
+    margin-bottom: 18px;
+    align-self: center;
+}
+
+
+
+@media screen and (max-width: 528px) {
+    .popup__save {
+        font-size: 14px;
+        line-height: 17px;
+    }
+
+}

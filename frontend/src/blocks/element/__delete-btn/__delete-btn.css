@@ -1,0 +1,13 @@
+.element__delete-btn {
+    background: rgba(0, 0, 0, 0) url(../../../image/Trash.svg) no-repeat;
+    position: absolute;
+    border: none;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    align-self: center;
+    align-items: center;
+    width: 20px;
+    height: 22px;
+
+}

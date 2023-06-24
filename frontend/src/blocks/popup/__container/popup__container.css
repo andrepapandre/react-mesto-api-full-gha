@@ -1,0 +1,15 @@
+.popup__container {
+  background-color: white;
+  border-radius: 10px;
+  width: 430px;
+  z-index: -3;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 528px) {
+  .popup__container {
+    width: 282px;
+  }
+}

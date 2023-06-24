@@ -1,0 +1,14 @@
+.header__button-exit {
+  margin-top: -11px;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+}

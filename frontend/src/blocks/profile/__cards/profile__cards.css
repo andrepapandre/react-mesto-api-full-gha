@@ -1,0 +1,37 @@
+.profile__cards {
+    max-width: 337px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "profile__name profile__edit-button"
+        "profile__name-info profile__name-info";
+    column-gap: 18px;
+    row-gap: 10px;
+    margin-top: 22px;
+    margin-bottom: 25px;
+    margin-left: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 1024px) {
+    .profile__cards {
+        margin-right: 60px;
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    .profile__cards {
+        margin: 0;
+        max-width: 217px;
+        margin-bottom: 26px;
+        margin-top: 0;
+        align-items: center;
+        column-gap: 10px;
+        row-gap: 7px;
+        margin-right: 19px;
+        margin-left: 46px;
+    }
+}

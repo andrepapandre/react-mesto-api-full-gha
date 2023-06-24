@@ -1,0 +1,18 @@
+.profile__image-button {
+  margin: 0;
+  padding: 0;
+  border-radius: 70%;
+  border-style: none;
+  width: 120px;
+  height: 120px;
+  align-self: center;
+  align-items: center;
+  background-color: black;
+}
+.profile__image-button:hover {
+  cursor: pointer;
+  background-image: url(../../../image/klo.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 3;
+}

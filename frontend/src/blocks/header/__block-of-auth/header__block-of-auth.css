@@ -1,0 +1,5 @@
+.header__block-of-auth {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

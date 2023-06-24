@@ -1,0 +1,15 @@
+.element__like_black {
+    background-image: url(../../../../image/Union.svg);
+    background-repeat: no-repeat;
+    opacity: 1;
+    border: 0px;
+    margin-left: 20px;
+    margin-right: 5px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    align-items: center;
+    width: 23px;
+    height: 20px;
+}

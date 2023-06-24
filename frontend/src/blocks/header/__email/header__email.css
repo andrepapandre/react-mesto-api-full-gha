@@ -1,0 +1,15 @@
+.header__email {
+  margin-top: 22px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  color: white;
+  margin-right: 24px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+}

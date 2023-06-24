@@ -1,0 +1,22 @@
+.profile__image {
+  border-radius: 70%;
+  width: 120px;
+  height: 120px;
+  margin-top: auto;
+  margin-bottom: auto;
+  z-index: 1;
+}
+
+.profile__image:hover {
+    opacity: 50%;
+}
+
+
+@media screen and (max-width: 820px) {
+  .profile__image {
+    margin-top: 0;
+    margin-bottom: 26px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

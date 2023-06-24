@@ -1,0 +1,16 @@
+.auth__reg {
+  margin-top: 15px;
+  text-decoration: none;
+  color: white;
+  transition: opacity 0.3s;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+
+  text-align: center;
+}
+
+.auth__reg:hover {
+  opacity: 0.6;
+}

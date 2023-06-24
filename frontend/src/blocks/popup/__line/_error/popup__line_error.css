@@ -1,0 +1,6 @@
+.popup__line_error {
+  display: block;
+  border-bottom: 1px solid red;
+  width: 358px;
+  height: 1px;
+}

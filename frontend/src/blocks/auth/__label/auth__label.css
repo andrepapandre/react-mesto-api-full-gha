@@ -1,0 +1,13 @@
+.auth__label {
+  padding: 0;
+  padding-bottom: 13px;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+  background-color: transparent;
+  margin-bottom: 30px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #ffffff;
+}
