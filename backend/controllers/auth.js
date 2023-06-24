@@ -1,3 +1,4 @@
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 const bcrypt = require('bcrypt'); // импортируем bcrypt
 // eslint-disable-next-line import/no-extraneous-dependencies
