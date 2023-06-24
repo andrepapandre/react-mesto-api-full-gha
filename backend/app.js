@@ -15,6 +15,6 @@ app.use((req, res, next) => {
 
 app.use(router);
 
-app.listen(3001, () => {
+app.listen(3000, () => {
   console.log('Server is listenning on port 3000');
 });
