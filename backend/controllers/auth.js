@@ -8,6 +8,9 @@ const ConflictError = require('../errors/conflict-err');
 const BadRequest = require('../errors/bad-requiest');
 const AuthError = require('../errors/auth-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+
 const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -56,9 +59,7 @@ const loginUser = (req, res, next) => {
     })
     .then((user) => Promise.all([user, bcrypt.compare(password, user.password)]))
     .then(([user, isEqual]) => {
-      const token = jwt.sign({ _id: user._id }, 'some-secret-key', {
-        expiresIn: '7d',
-      });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       if (!isEqual) {
         next(new AuthError('Неверный email или пароль'));
         return;
