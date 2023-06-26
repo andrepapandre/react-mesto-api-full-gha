@@ -1,7 +1,6 @@
 export class Apic {
   constructor(baseUrl) {
     this.url = baseUrl;
-    this.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDk1YjA3NWU4NWZmZjk0MjMyZWJjMGYiLCJpYXQiOjE2ODc2MjI2OTgsImV4cCI6MTY4ODIyNzQ5OH0.-ptHXNUmktRLDKdGbSQffmm8zra3uQ-X25ipTCOysF8";
   }
 
   _processingServerResponse(res) {
