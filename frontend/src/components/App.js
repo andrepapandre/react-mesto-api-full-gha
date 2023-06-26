@@ -39,6 +39,18 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    const isToken = localStorage.getItem("token");
+    if (isToken) {
+      auth
+        .checkToken(isToken)
+        .then((res) => {
+         console.log(res)
+        })
+        .catch(console.error);
+    }
+  }, []);
+  
+  React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.renderCards()])
       .then((res) => {
         setCards(res[1]);
@@ -225,17 +237,7 @@ function App() {
     }
   }, [navigate]);
 
-  React.useEffect(() => {
-    const isToken = localStorage.getItem("token");
-    if (isToken) {
-      auth
-        .checkToken(isToken)
-        .then((res) => {
-         alert(res)
-        })
-        .catch(console.error);
-    }
-  }, []);
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
