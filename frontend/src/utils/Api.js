@@ -1,7 +1,7 @@
 export class Apic {
   constructor(baseUrl, options) {
     this.url = baseUrl;
-    this.token = options.headers;
+    this.token = "123";
   }
 
   _processingServerResponse(res) {
