@@ -225,6 +225,18 @@ function App() {
     }
   }, [navigate]);
 
+  React.useEffect(() => {
+    const isToken = localStorage.getItem("token");
+    if (isToken) {
+      auth
+        .checkToken(isToken)
+        .then((res) => {
+         alert(res)
+        })
+        .catch(console.error);
+    }
+  }, []);
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
