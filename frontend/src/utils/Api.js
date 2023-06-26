@@ -1,11 +1,23 @@
 export class Apic {
   constructor(baseUrl, options) {
     this.url = baseUrl;
-    this.token = options.headers;
   }
 
   _processingServerResponse(res) {
     return res.ok ? res.json() : Promise.reject();
+  }
+
+  checkToken(token) {
+    const url = `${this._baseUrl}/users/me`;
+    this.token = token
+    console.log("этот токен в апик", this.token);
+    return fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(this._processingServerResponse);
   }
 
   getUserInfo() {

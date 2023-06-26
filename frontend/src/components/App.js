@@ -38,7 +38,7 @@ function App() {
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+    React.useEffect(() => {
     const isToken = localStorage.getItem("token");
     if (isToken) {
       auth
