@@ -42,11 +42,7 @@ function App() {
     const isToken = localStorage.getItem("token");
     if (isToken) {
       api
-        .setAuthHeaders(isToken)
-        .then((res) => {
-         console.log(res)
-        })
-        .catch(console.error);
+        .setAuthHeaders(isToken);
     }
   }, []);
 
