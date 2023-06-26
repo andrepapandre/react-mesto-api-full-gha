@@ -43,10 +43,6 @@ function App() {
     if (isToken) {
       api
         .setAuthHeaders(isToken)
-        .then((res) => {
-         console.log(res)
-        })
-        .catch(console.error);
     }
   }, []);
 
