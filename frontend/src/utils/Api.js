@@ -23,7 +23,7 @@ export class Apic {
     return fetch(this.url + "/users/me", {
       method: "PATCH",
       headers: {
-        authorization: token,
+        authorization: this.token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
