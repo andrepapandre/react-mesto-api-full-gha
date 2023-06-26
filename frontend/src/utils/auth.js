@@ -25,6 +25,7 @@ class Auth {
     const url = `${this._baseUrl}/signin`;
     return fetch(url, {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -36,6 +37,7 @@ class Auth {
     const url = `${this._baseUrl}/users/me`;
     this.token = token
     console.log('token in auth.js', token)
+    console.log(this.token);
     return fetch(url, {
       method: "GET",
       headers: {

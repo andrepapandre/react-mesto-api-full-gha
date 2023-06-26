@@ -19,6 +19,5 @@ app.use((req, res, next) => {
 app.use(router);
 
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`); 
+  console.log(`App listening on port ${PORT}`);
 });
-
