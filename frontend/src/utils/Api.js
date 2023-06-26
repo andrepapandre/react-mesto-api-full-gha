@@ -2,7 +2,7 @@ export class Api {
   constructor({ baseUrl, headers }) {
     this.url = baseUrl;
     this.headers = headers;
-    this.AuthHeaders = null
+    this.auth = null;
   }
 
   _processingServerResponse(res) {
@@ -10,31 +10,26 @@ export class Api {
   }
 
   setAuthHeaders(token) {
-    console.log('token from api', token);
-    this.AuthHeaders = {
-      ... this.headers,
-      Authorization: `Bearer ${token}`,
-    };
+    console.log('token from api', this.auth);
+    this.auth = {
+	... this.headers,
+	authorization: `Bearer ${token}`,
+     };
   }
 
   getUserInfo() {
     return fetch(this.url + "/users/me", {
       method: "GET",
-      headers: {
-        authorization: this.AuthHeaders,
-      },
+      headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
     });
   }
 
-  editUserInfo({ name, about }) {
+   editUserInfo({ name, about }) {
     return fetch(this.url + "/users/me", {
       method: "PATCH",
-      headers: {
-        authorization: this.AuthHeaders,
-        "Content-Type": "application/json",
-      },
+      headers: this.auth,
       body: JSON.stringify({
         name: name,
         about: about,
@@ -47,10 +42,7 @@ export class Api {
   editAvatarImage({ avatar }) {
     return fetch(this.url + "/users/me/avatar", {
       method: "PATCH",
-      headers: {
-        authorization: this.AuthHeaders,
-        "Content-Type": "application/json",
-      },
+      headers: this.headers,
       body: JSON.stringify({
         avatar: avatar,
       }),
@@ -62,9 +54,7 @@ export class Api {
   renderCards() {
     return fetch(this.url + "/cards", {
       method: "GET",
-      headers: {
-        authorization: this.AuthHeaders,
-      },
+      headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -73,10 +63,7 @@ export class Api {
   addCard = ({ name, link }) => {
     return fetch(this.url + "/cards", {
       method: "POST",
-      headers: {
-        authorization: this.AuthHeaders,
-        "Content-Type": "application/json",
-      },
+      headers: this.auth,
       body: JSON.stringify({
         name: name,
         link: link,
@@ -89,9 +76,7 @@ export class Api {
   deleteCard(id) {
     return fetch(this.url + "/cards/" + id, {
       method: "DELETE",
-      headers: {
-        authorization: this.AuthHeaders,
-      },
+      headers: this.auth
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -100,10 +85,7 @@ export class Api {
   likeCard(idCard) {
     return fetch(this.url + "/cards/" + idCard + "/likes", {
       method: "PUT",
-      headers: {
-        authorization: this.AuthHeaders,
-        "Content-Type": "application/json",
-      },
+      headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -112,10 +94,7 @@ export class Api {
   deleteLikeCard(idCard) {
     return fetch(this.url + "/cards/" + idCard + "/likes", {
       method: "DELETE",
-      headers: {
-        authorization: this.AuthHeaders,
-        "Content-Type": "application/json",
-      },
+      headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
     });
@@ -125,6 +104,6 @@ export class Api {
 export const api = new Api({
   baseUrl: "https://andrepapandre.nomoredomains.work",
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   }
 });

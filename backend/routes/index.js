@@ -11,6 +11,12 @@ const {
   loginUserValid,
 } = require('../middlewares/validation');
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+}); 
+
 router.post('/signup', createUserValid, authorization.createUser);
 router.post('/signin', loginUserValid, authorization.loginUser);
 

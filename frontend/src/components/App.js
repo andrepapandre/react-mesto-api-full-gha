@@ -188,6 +188,7 @@ function App() {
       .authorize({ email, password })
       .then((res) => {
         if (res.token) localStorage.setItem("token", res.token);
+        api.setAuthHeaders(res.token);
         setLoggedIn(true);
         navigate("/");
       })
