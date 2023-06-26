@@ -1,30 +1,27 @@
-export class Apic {
-  constructor(baseUrl, options) {
+export class Api {
+  constructor({ baseUrl, headers }) {
     this.url = baseUrl;
+    this.headers = headers;
+    this.AuthHeaders = null
   }
 
   _processingServerResponse(res) {
     return res.ok ? res.json() : Promise.reject();
   }
 
-  checkToken(token) {
-    const url = `${this._baseUrl}/users/me`;
-    this.token = token
-    console.log("этот токен в апик", this.token);
-    return fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }).then(this._processingServerResponse);
+  setAuthHeaders(token) {
+    console.log('token from api', token);
+    this.AuthHeaders = {
+      ... this.headers,
+      Authorization: `Bearer ${token}`,
+    };
   }
 
   getUserInfo() {
     return fetch(this.url + "/users/me", {
       method: "GET",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
       },
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -35,7 +32,7 @@ export class Apic {
     return fetch(this.url + "/users/me", {
       method: "PATCH",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -51,7 +48,7 @@ export class Apic {
     return fetch(this.url + "/users/me/avatar", {
       method: "PATCH",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -66,7 +63,7 @@ export class Apic {
     return fetch(this.url + "/cards", {
       method: "GET",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
       },
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -77,7 +74,7 @@ export class Apic {
     return fetch(this.url + "/cards", {
       method: "POST",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -93,7 +90,7 @@ export class Apic {
     return fetch(this.url + "/cards/" + id, {
       method: "DELETE",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
       },
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -104,7 +101,7 @@ export class Apic {
     return fetch(this.url + "/cards/" + idCard + "/likes", {
       method: "PUT",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
         "Content-Type": "application/json",
       },
     }).then((res) => {
@@ -116,7 +113,7 @@ export class Apic {
     return fetch(this.url + "/cards/" + idCard + "/likes", {
       method: "DELETE",
       headers: {
-        authorization: this.token,
+        authorization: this.AuthHeaders,
         "Content-Type": "application/json",
       },
     }).then((res) => {
@@ -125,4 +122,9 @@ export class Apic {
   }
 }
 
-export const api = new Apic("https://andrepapandre.nomoredomains.work");
+export const api = new Api({
+  baseUrl: "https://andrepapandre.nomoredomains.work",
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});

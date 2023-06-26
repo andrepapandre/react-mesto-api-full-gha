@@ -41,15 +41,15 @@ function App() {
     React.useEffect(() => {
     const isToken = localStorage.getItem("token");
     if (isToken) {
-      auth
-        .checkToken(isToken)
+      api
+        .setAuthHeaders(isToken)
         .then((res) => {
          console.log(res)
         })
         .catch(console.error);
     }
   }, []);
-  
+
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.renderCards()])
       .then((res) => {
