@@ -1,8 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom"; // импортируем Routes
 import "../index.css";
-import Footer from "./Footer";
-import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import { ImagePopup } from "./PopupWithImage";
@@ -38,50 +36,37 @@ function App() {
 
   const navigate = useNavigate();
 
-    React.useEffect(() => {
-    const isToken = localStorage.getItem("token");
-    if (isToken) {
-      api
-        .setAuthHeaders(isToken);
-    }
-  }, []);
-
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.renderCards()])
-      .then((res) => {
-        setCards(res[1]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.renderCards()])
+        .then(([userData, initialCards]) => {
+          setCurrentUser(userData);
+          setCards(initialCards.cards)
+        })
+        .catch(err => console.log(err));
+    }
+
+  }, [loggedIn]);
+
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
 
     if (!isLiked) {
       api
         .likeCard(card._id)
         .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
+          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-    if (isLiked) {
+        .catch(err => console.log(err))
+    } else {
+      console.log(card._id);
       api
-        .deleteLikeCard(card._id, isLiked)
+        .deleteLikeCard(card._id)
         .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
+          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
-        .catch((e) => {
-          console.log(e);
-        });
+        .catch(err => console.log(err))
     }
   }
 
@@ -99,17 +84,6 @@ function App() {
         console.log(e);
       });
   }
-
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {
-        alert(`Ошибка загруки контента: ${err}`);
-      });
-  }, []);
 
   const handleCardClick = ({ link, name }) => {
     return setSelectedCard({ link, name });
@@ -133,11 +107,11 @@ function App() {
     return setIsStatusOpen(!isStatusOpen);
   };
 
-  function handleUpdateUser(data) {
+  function handleUpdateUser({ name, about }) {
     api
       .editUserInfo({
-        name: data.name,
-        about: data.about,
+        name: name,
+        about: about,
       })
       .then((res) => {
         setCurrentUser(res);
@@ -152,6 +126,7 @@ function App() {
     api
       .editAvatarImage(avatar)
       .then((res) => {
+        console.log(res);
         setCurrentUser(res);
         closeAllPopups();
       })
@@ -159,6 +134,7 @@ function App() {
         console.log(err);
       });
   }
+
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setisEditAvatarPopupOpen(false);
@@ -174,7 +150,7 @@ function App() {
         link: link,
       })
       .then((res) => {
-        const newCard = res;
+        const newCard = res.data;
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
@@ -187,9 +163,14 @@ function App() {
     auth
       .authorize({ email, password })
       .then((res) => {
-        if (res.token) localStorage.setItem("token", res.token);
-        api.setAuthHeaders(res.token);
+        if (res.token) {
+          api.setAuthHeaders(res.token);
+          localStorage.setItem("token", res.token);
+          console.log(res.token);
+        }
         setLoggedIn(true);
+        setEmail(email);
+        console.log(email);
         navigate("/");
       })
       .catch((e) => {
@@ -205,6 +186,7 @@ function App() {
           localStorage.setItem("jwt", res.jwt);
           setLoggedIn(true);
           setUserData(res.user);
+          console.log(res);
         }
         onStatus(true);
       })
@@ -216,6 +198,7 @@ function App() {
 
   const cbLogOut = () => {
     setLoggedIn(false);
+    api.setAuthHeaders(localStorage.removeItem("token"));
     localStorage.removeItem("token");
     setUserData(initalUser);
   };
@@ -223,14 +206,9 @@ function App() {
   React.useEffect(() => {
     const isToken = localStorage.getItem("token");
     if (isToken) {
-      auth
-        .checkToken(isToken)
-        .then((res) => {
-          setEmail(res.data.email);
-          setLoggedIn(true);
-          navigate("/");
-        })
-        .catch(console.error);
+      api.setAuthHeaders(isToken);
+      setLoggedIn(true);
+      navigate("/");
     }
   }, [navigate]);
 
@@ -312,9 +290,5 @@ function App() {
     </CurrentUserContext.Provider>
   );
 }
-// Сервер у меня лично заработал, все показывает, infoTooltip тоже!
-// К сожалению вынужден не исправлять пометки "Можно лучше",
-// нахожусь в командировке, + через 7 дней жесткий ДД, а у меня был последний академ
-// Однако спасибо за эти пометки, они очень полезны  для улучшения кода!
 
 export default App;

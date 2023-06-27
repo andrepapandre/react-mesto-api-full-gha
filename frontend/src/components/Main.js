@@ -62,7 +62,6 @@ function Main({
               card={card}
               onCardClick={handleCardClick}
               onCardDelete={handleCardDelete}
-              key={card._id}
             />
           );
         })}

@@ -33,10 +33,7 @@ class Auth {
   }
 
   checkToken(token) {
-    const url = `${this._baseUrl}/users/me`;
-    this.token = token
-    console.log('token in auth.js', token)
-    console.log(this.token);
+    const url = `${this._baseUrl}/users`;
     return fetch(url, {
       method: "GET",
       headers: {
@@ -47,6 +44,6 @@ class Auth {
   }
 }
 
-const auth = new Auth("https://andrepapandre.nomoredomains.work");
+const auth = new Auth("http://localhost:3000");
 
 export default auth;

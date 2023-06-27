@@ -9,8 +9,13 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 158.160.20.24
 
-Frontend https://...
+Frontend https://andrepapandre.nomoreparties.sbs
 
-Backend https://...
+Backend https://andrepapandre.nomoredomains.work  
+
+P.S Сильно запутался
+Во фронте не получается получать нужные данные
+Буду рад, если вы дадите подробную обратную связь
+Спасибо

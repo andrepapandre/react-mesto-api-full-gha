@@ -34,12 +34,15 @@ const getUserById = (req, res, next) => {
 
 const updateUserInfo = (req, res, next) => {
   const { name, about } = req.body;
-  const { _id } = req.user._id;
   userModel
-    .findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
+    .findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail()
-    .then(() => res.status(OK).send({ message: 'Изменения сохранены' }))
-    .catch((err) => {
+    .then((user) => {
+      if (!user) {
+        next(new NotFoundError('Пользователь по указанному _id не найден'));
+      }
+      res.send(user);
+    }).catch((err) => {
       if (err.name === ValErr) {
         next(new BadRequest('Переданы некорректные данные при создании пользователя'));
         return;
@@ -52,14 +55,23 @@ const updateUserInfo = (req, res, next) => {
     });
 };
 
+const getUserInfo = (req, res, next) => {
+  const userId = req.user._id;
+  userModel.findById(userId)
+    .then((user) => res.send(user))
+    .catch(next);
+};
+
 const updateAvatar = (req, res, next) => {
-  const { _id } = req.user._id;
 
   userModel
-    .findByIdAndUpdate(_id, { ...req.body }, { new: true, runValidators: true })
+    .findByIdAndUpdate(req.user._id, { ...req.body }, { new: true, runValidators: true })
     .orFail()
-    .then(() => {
-      res.status(OK).send({ message: 'Аватар успешно обновлен' });
+    .then((user) => {
+      if (!user) {
+        next(new NotFoundError('Пользователь по указанному _id не найден'));
+      }
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === ValErr) {
@@ -79,4 +91,5 @@ module.exports = {
   getUserById,
   updateUserInfo,
   updateAvatar,
+  getUserInfo
 };
