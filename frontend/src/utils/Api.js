@@ -18,7 +18,7 @@ export class Api {
   }
 
   getUserInfo() {
-    return fetch(this.url + '/users', {
+    return fetch(this.url + '/users/me', {
       method: 'GET',
       headers: this.auth,
     }).then((res) => {
@@ -53,6 +53,7 @@ export class Api {
 
   renderCards() {
     return fetch(this.url + '/cards', {
+      method: 'GET',
       headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -101,7 +102,7 @@ export class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://andrepapandre.nomoredomains.work',
+  baseUrl: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
   }

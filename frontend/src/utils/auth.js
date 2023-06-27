@@ -44,6 +44,6 @@ class Auth {
   }
 }
 
-const auth = new Auth("https://andrepapandre.nomoredomains.work");
+const auth = new Auth("http://localhost:3000");
 
 export default auth;

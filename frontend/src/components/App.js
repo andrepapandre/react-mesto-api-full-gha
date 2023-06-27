@@ -15,7 +15,7 @@ import Register from "./Register";
 import auth from "../utils/auth";
 import InfoTooltip from "./InfoTooltip";
 
-const initalUser = { username: "", email: "", _id: "" };
+const initalUser = { username: "", email: "" };
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -37,18 +37,29 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-      Promise.all([api.getUserInfo(), api.renderCards()])
-       .then(([userData, initialCards]) => {
+    if (loggedIn) {
+      Promise.all([api.getUserData(), api.getInitialCards()])
+        .then(([userData, initialCards]) => {
           setCurrentUser(userData);
           setCards(initialCards);
-          console.log(userData, initialCards);
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    
+        .catch(err => console.log(err));
+    }
 
-  }, []);
+  }, [loggedIn]);
+
+  // React.useEffect(() => {
+  //   api
+  //     .getUserInfo()
+  //     .then((res) => {
+  //       setCurrentUser(res);
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+
+  //     });
+
+  // }, []);
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -93,17 +104,6 @@ function App() {
         console.log(e);
       });
   }
-
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {
-        alert(`Ошибка загруки контента: ${err}`);
-      });
-  }, []);
 
   const handleCardClick = ({ link, name }) => {
     return setSelectedCard({ link, name });
@@ -203,6 +203,7 @@ function App() {
           localStorage.setItem("jwt", res.jwt);
           setLoggedIn(true);
           setUserData(res.user);
+          console.log(res);
         }
         onStatus(true);
       })

@@ -52,6 +52,14 @@ const updateUserInfo = (req, res, next) => {
     });
 };
 
+const getUserInfo = (req, res, next) => {
+  console.log(req.user);
+  const userId = req.user._id;
+  userModel.findById(userId)
+    .then((user) => res.send(user))
+    .catch(next);
+};
+
 const updateAvatar = (req, res, next) => {
   const { _id } = req.user._id;
 
@@ -79,4 +87,5 @@ module.exports = {
   getUserById,
   updateUserInfo,
   updateAvatar,
+  getUserInfo
 };
