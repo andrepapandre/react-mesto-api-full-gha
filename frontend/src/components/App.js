@@ -15,7 +15,7 @@ import Register from "./Register";
 import auth from "../utils/auth";
 import InfoTooltip from "./InfoTooltip";
 
-const initalUser = { username: "", email: "" };
+const initalUser = { username: "", email: "", _id: "" };
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -37,15 +37,16 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (loggedIn) {
       Promise.all([api.getUserInfo(), api.renderCards()])
-        .then((res) => {
-          setCards(res[1]);
+       .then(([userData, initialCards]) => {
+          setCurrentUser(userData);
+          setCards(initialCards);
+          console.log(userData, initialCards);
         })
         .catch((err) => {
           console.log(err);
         });
-    }
+    
 
   }, []);
 
@@ -126,11 +127,11 @@ function App() {
     return setIsStatusOpen(!isStatusOpen);
   };
 
-  function handleUpdateUser(data) {
+  function handleUpdateUser({ name, about }) {
     api
       .editUserInfo({
-        name: data.name,
-        about: data.about,
+        name: name,
+        about: about,
       })
       .then((res) => {
         setCurrentUser(res);

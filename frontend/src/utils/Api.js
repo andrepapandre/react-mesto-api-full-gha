@@ -18,8 +18,8 @@ export class Api {
   }
 
   getUserInfo() {
-    return fetch(this.url + "/users/me", {
-      method: "GET",
+    return fetch(this.url + '/users', {
+      method: 'GET',
       headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -27,8 +27,8 @@ export class Api {
   }
 
    editUserInfo({ name, about }) {
-    return fetch(this.url + "/users/me", {
-      method: "PATCH",
+    return fetch(this.url + '/users/me', {
+      method: 'PATCH',
       headers: this.auth,
       body: JSON.stringify({
         name: name,
@@ -40,8 +40,8 @@ export class Api {
   }
 
   editAvatarImage({ avatar }) {
-    return fetch(this.url + "/users/me/avatar", {
-      method: "PATCH",
+    return fetch(this.url + '/users/me/avatar', {
+      method: 'PATCH',
       headers: this.auth,
       body: JSON.stringify({
         avatar: avatar,
@@ -52,8 +52,7 @@ export class Api {
   }
 
   renderCards() {
-    return fetch(this.url + "/cards", {
-      method: "GET",
+    return fetch(this.url + '/cards', {
       headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -61,8 +60,8 @@ export class Api {
   }
 
   addCard = ({ name, link }) => {
-    return fetch(this.url + "/cards", {
-      method: "POST",
+    return fetch(this.url + '/cards', {
+      method: 'POST',
       headers: this.auth,
       body: JSON.stringify({
         name: name,
@@ -74,8 +73,8 @@ export class Api {
   };
 
   deleteCard(id) {
-    return fetch(this.url + "/cards/" + id, {
-      method: "DELETE",
+    return fetch(this.url + '/cards/' + id, {
+      method: 'DELETE',
       headers: this.auth
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -83,8 +82,8 @@ export class Api {
   }
 
   likeCard(idCard) {
-    return fetch(this.url + "/cards/" + idCard + "/likes", {
-      method: "PUT",
+    return fetch(this.url + '/cards/' + idCard + '/likes', {
+      method: 'PUT',
       headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -92,8 +91,8 @@ export class Api {
   }
 
   deleteLikeCard(idCard) {
-    return fetch(this.url + "/cards/" + idCard + "/likes", {
-      method: "DELETE",
+    return fetch(this.url + '/cards/' + idCard + '/likes', {
+      method: 'DELETE',
       headers: this.auth,
     }).then((res) => {
       return this._processingServerResponse(res);
@@ -102,7 +101,7 @@ export class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://andrepapandre.nomoredomains.work",
+  baseUrl: 'https://andrepapandre.nomoredomains.work',
   headers: {
     'Content-Type': 'application/json',
   }

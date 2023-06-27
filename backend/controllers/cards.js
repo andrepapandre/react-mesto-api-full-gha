@@ -19,7 +19,7 @@ const getCards = (req, res) => {
   cardModel
     .find({})
     .then((cards) => {
-      res.send({ data: cards });
+      res.send({ cards });
     })
     .catch((err) => {
       res.status(INTERNAL_SERVER_ERROR).send({
