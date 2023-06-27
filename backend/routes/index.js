@@ -11,7 +11,7 @@ const {
   loginUserValid,
 } = require('../middlewares/validation');
 
-app.get('/crash-test', () => {
+router.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
