@@ -1,8 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom"; // импортируем Routes
 import "../index.css";
-import Footer from "./Footer";
-import Header from "./Header";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import { ImagePopup } from "./PopupWithImage";
@@ -38,22 +36,17 @@ function App() {
 
   const navigate = useNavigate();
 
-    React.useEffect(() => {
-    const isToken = localStorage.getItem("token");
-    if (isToken) {
-      api
-        .setAuthHeaders(isToken);
-    }
-  }, []);
-
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.renderCards()])
-      .then((res) => {
-        setCards(res[1]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.renderCards()])
+        .then((res) => {
+          setCards(res[1]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
   }, []);
 
   function handleCardLike(card) {
@@ -187,9 +180,13 @@ function App() {
     auth
       .authorize({ email, password })
       .then((res) => {
-        if (res.token) localStorage.setItem("token", res.token);
-        api.setAuthHeaders(res.token);
+        if (res.token) {
+          api.setAuthHeaders(res.token);
+          localStorage.setItem("token", res.token);
+          console.log(res.token);
+        }
         setLoggedIn(true);
+        setEmail(email)
         navigate("/");
       })
       .catch((e) => {
@@ -216,6 +213,7 @@ function App() {
 
   const cbLogOut = () => {
     setLoggedIn(false);
+    api.setAuthHeaders(localStorage.removeItem("token"));
     localStorage.removeItem("token");
     setUserData(initalUser);
   };
@@ -223,14 +221,9 @@ function App() {
   React.useEffect(() => {
     const isToken = localStorage.getItem("token");
     if (isToken) {
-      auth
-        .checkToken(isToken)
-        .then((res) => {
-          setEmail(res.data.email);
-          setLoggedIn(true);
-          navigate("/");
-        })
-        .catch(console.error);
+      api.setAuthHeaders(isToken);
+      setLoggedIn(true);
+      navigate("/");
     }
   }, [navigate]);
 

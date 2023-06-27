@@ -42,7 +42,7 @@ export class Api {
   editAvatarImage({ avatar }) {
     return fetch(this.url + "/users/me/avatar", {
       method: "PATCH",
-      headers: this.headers,
+      headers: this.auth,
       body: JSON.stringify({
         avatar: avatar,
       }),
