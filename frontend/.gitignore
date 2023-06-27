@@ -1,2 +1,16 @@
-node_modules
-dist
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+
+npm-debug.log*
