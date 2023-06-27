@@ -16,7 +16,9 @@ export function Card(props) {
   function handleCardLike() {
     props.onCardLike(props.card);
   }
+const card = props.card.owner
 
+console.log(card);
   const isOwn = props.card.owner._id === currentUser._id;
   const isLiked = props.card.likes.some((i) => i._id === currentUser._id);
   const cardLikeButtonClassName = `element__like ${

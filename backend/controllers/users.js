@@ -58,14 +58,12 @@ const getUserInfo = (req, res, next) => {
     .catch(next);
 };
 
-const updateAvatar = (req, res, next) => { 
-  const { _id } = req.user._id; 
- 
+const updateAvatar = (req, res, next) => {  
   userModel 
-    .findByIdAndUpdate(_id, { ...req.body }, { new: true, runValidators: true }) 
+    .findByIdAndUpdate(req.user._id, { ...req.body }, { new: true, runValidators: true }) 
     .orFail() 
-    .then(() => { 
-      res.status(OK).send({ message: 'Аватар успешно обновлен' }); 
+    .then((card) => { 
+      res.status(OK).send(card); 
     }) 
     .catch((err) => { 
       if (err.name === ValErr) { 

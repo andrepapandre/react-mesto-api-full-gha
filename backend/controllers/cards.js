@@ -37,7 +37,7 @@ const deleteCardbyId = (req, res, next) => {
       if (!card) {
         next(new NotFoundError('Такой карточки нет'))
       }
-      if (card.owner.toString() !== req.user._id ) {
+      if (card.owner.toString() !== req.user._id) {
         next(new ForbiddenError('Нет прав доступа'))
       }
       return cardModel.findByIdAndRemove(req.params.cardid).then(() => {
@@ -53,22 +53,14 @@ const deleteCardbyId = (req, res, next) => {
     });
 };
 
-const createCard = (req, res) => {
-  cardModel
-    .create({ ...req.body, owner: req.user._id })
+const createCard = (req, res, next) => {
+  const { name, link } = req.body;
+  const owner = req.user;
+  cardModel.create({ name, link, owner })
     .then((card) => card.populate('owner'))
-    .then((card) => res.status(CREATED).send({ data: card }))
+    .then((card) => res.status(201).send(card))
     .catch((err) => {
-      if (err.name === ValErr) {
-        return res.status(BAD_REQUIEST).send({
-          message: 'Переданы некорректные данные при создании карточки',
-        });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).send({
-        message: 'Произошла ошибка',
-        err: err.message,
-        stack: err.stack,
-      });
+      return next(err);
     });
 };
 

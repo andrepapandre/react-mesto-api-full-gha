@@ -41,6 +41,7 @@ function App() {
       Promise.all([api.getUserInfo(), api.renderCards()])
         .then(([userData, initialCards]) => {
           setCurrentUser(userData);
+          setEmail(userData.email);
           setCards(initialCards.cards)
         })
         .catch(err => console.log(err));
@@ -126,7 +127,6 @@ function App() {
     api
       .editAvatarImage(avatar)
       .then((res) => {
-        console.log(res);
         setCurrentUser(res);
         closeAllPopups();
       })
@@ -150,7 +150,8 @@ function App() {
         link: link,
       })
       .then((res) => {
-        const newCard = res.data;
+        console.log(res);
+        const newCard = res;
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
@@ -170,7 +171,6 @@ function App() {
         }
         setLoggedIn(true);
         setEmail(email);
-        console.log(email);
         navigate("/");
       })
       .catch((e) => {
