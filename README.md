@@ -14,8 +14,3 @@ IP-адрес 158.160.20.24
 Frontend https://andrepapandre.nomoreparties.sbs
 
 Backend https://andrepapandre.nomoredomains.work  
-<<<<<<< HEAD
-
-P.S Сильно запутался
-=======
->>>>>>> cbc129a9eec00f891a7b3ca65a1fded6eb0a9dd4
