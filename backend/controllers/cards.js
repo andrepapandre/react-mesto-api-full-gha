@@ -79,21 +79,6 @@ const createCard = (req, res) => {
     });
 };
 
-
-// likeCard = (req, res, next) => {
-//   const { cardId } = req.params;
-//   const { _id } = req.user;
-
-//   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: _id } }, { new: true })
-//     .then((card) => {
-//       if (!card) {
-//         throw new NotFoundError('Карточка по указанному _id не найдена');
-//       }
-//       res.send(card);
-//     })
-//     .catch(next);
-// };
-
 const likeCard = (req, res, next) => {
   cardModel.findByIdAndUpdate(req.params.cardid, { $addToSet: { likes: req.user } }, { new: true })
     .populate(['owner', 'likes'])
