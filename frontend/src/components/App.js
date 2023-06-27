@@ -38,55 +38,35 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      Promise.all([api.getUserData(), api.getInitialCards()])
+      Promise.all([api.getUserInfo(), api.renderCards()])
         .then(([userData, initialCards]) => {
           setCurrentUser(userData);
-          setCards(initialCards);
+          setCards(initialCards.cards)
         })
         .catch(err => console.log(err));
     }
 
   }, [loggedIn]);
 
-  // React.useEffect(() => {
-  //   api
-  //     .getUserInfo()
-  //     .then((res) => {
-  //       setCurrentUser(res);
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-
-  //     });
-
-  // }, []);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
 
     if (!isLiked) {
       api
         .likeCard(card._id)
         .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
+          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-    if (isLiked) {
+        .catch(err => console.log(err))
+    } else {
+      console.log(card._id);
       api
-        .deleteLikeCard(card._id, isLiked)
+        .deleteLikeCard(card._id)
         .then((newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
-          );
+          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
-        .catch((e) => {
-          console.log(e);
-        });
+        .catch(err => console.log(err))
     }
   }
 
@@ -146,6 +126,7 @@ function App() {
     api
       .editAvatarImage(avatar)
       .then((res) => {
+        console.log(res);
         setCurrentUser(res);
         closeAllPopups();
       })
@@ -153,6 +134,7 @@ function App() {
         console.log(err);
       });
   }
+
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setisEditAvatarPopupOpen(false);
@@ -168,7 +150,7 @@ function App() {
         link: link,
       })
       .then((res) => {
-        const newCard = res;
+        const newCard = res.data;
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
@@ -187,7 +169,8 @@ function App() {
           console.log(res.token);
         }
         setLoggedIn(true);
-        setEmail(email)
+        setEmail(email);
+        console.log(email);
         navigate("/");
       })
       .catch((e) => {
@@ -307,9 +290,5 @@ function App() {
     </CurrentUserContext.Provider>
   );
 }
-// Сервер у меня лично заработал, все показывает, infoTooltip тоже!
-// К сожалению вынужден не исправлять пометки "Можно лучше",
-// нахожусь в командировке, + через 7 дней жесткий ДД, а у меня был последний академ
-// Однако спасибо за эти пометки, они очень полезны  для улучшения кода!
 
 export default App;
