@@ -34,15 +34,10 @@ const createUser = (req, res, next) => {
       }))
       .catch((err) => {
         if (err.code === 11000) {
-          next(new ConflictError('Такой пользователь уже существует'));
-          return;
+          return next(new ConflictError('Такой пользователь уже существует'));
         }
         if (err.name === ValErr) {
-          next(
-            new BadRequest(
-              'Переданы некорректные данные при создании пользователя',
-            ),
-          );
+          return next(new BadRequest('Переданы некорректные данные при создании пользователя'));
         }
         next(err);
       });
@@ -68,10 +63,6 @@ const loginUser = (req, res, next) => {
       res.status(OK).send({ token });
     })
     .catch((err) => {
-      if (err.message === 'UnauthorizedError') {
-        next(new AuthError('Неверный email или пароль'));
-        return;
-      }
       next(err);
     });
 };

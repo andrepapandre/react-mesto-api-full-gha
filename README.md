@@ -16,6 +16,3 @@ Frontend https://andrepapandre.nomoreparties.sbs
 Backend https://andrepapandre.nomoredomains.work  
 
 P.S Сильно запутался
-Во фронте не получается получать нужные данные
-Буду рад, если вы дадите подробную обратную связь
-Спасибо

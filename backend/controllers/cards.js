@@ -1,3 +1,7 @@
+const NotFoundError = require('../errors/not-found-err');
+const ForbiddenError = require('../errors/not-found-err');
+const BadRequest = require('../errors/not-found-err');
+
 const cardModel = require('../models/card');
 const {
   OK,
@@ -15,48 +19,37 @@ const {
   BAD_REQUIEST,
 } = require('../statusServerName');
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   cardModel
     .find({})
     .populate(['owner', 'likes'])
     .then((cards) => {
       res.send({ cards });
     })
-    .catch((err) => {
-      res.status(INTERNAL_SERVER_ERROR).send({
-        message: 'Произошла ошибка',
-        err: err.message,
-        stack: err.stack,
-      });
-    });
+    .catch((err) => next(err));;
 };
 
-const deleteCardbyId = (req, res) => {
+const deleteCardbyId = (req, res, next) => {
   cardModel
     .findById(req.params.cardid)
     .orFail()
-    .then(() => {
-      if (req.user._id !== req.user._id) {
-        res.status(FORBITTEN).send({ message: 'Нет прав доступа' });
+    .then((card) => {
+      if (!card) {
+        next(new NotFoundError('Такой карточки нет'))
+      }
+      if (card.owner.toString() !== req.user._id ) {
+        next(new ForbiddenError('Нет прав доступа'))
       }
       return cardModel.findByIdAndRemove(req.params.cardid).then(() => {
         res.status(OK).send({ message: 'Карточка успешно удалена' });
       });
     })
     .catch((err) => {
-      if (err.name === DocNotFound) {
-        return res.status(NOT_FOUND).send({ message: 'Карточка не найдена' });
-      }
-      if (err.name === CastErr) {
-        return res
-          .status(BAD_REQUIEST)
-          .send({ message: 'Некорректный _id карточки' });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).send({
-        message: 'Произошла ошибка',
-        err: err.message,
-        stack: err.stack,
-      });
+      if (err.name === 'CastError') {
+        next(new BadRequest('Некоректный id'));
+        return;
+      };
+      next(err);
     });
 };
 
@@ -79,31 +72,14 @@ const createCard = (req, res) => {
     });
 };
 
-
-// likeCard = (req, res, next) => {
-//   const { cardId } = req.params;
-//   const { _id } = req.user;
-
-//   Card.findByIdAndUpdate(cardId, { $addToSet: { likes: _id } }, { new: true })
-//     .then((card) => {
-//       if (!card) {
-//         throw new NotFoundError('Карточка по указанному _id не найдена');
-//       }
-//       res.send(card);
-//     })
-//     .catch(next);
-// };
-
 const likeCard = (req, res, next) => {
   cardModel.findByIdAndUpdate(req.params.cardid, { $addToSet: { likes: req.user } }, { new: true })
     .populate(['owner', 'likes'])
+    .orFail(new NotFoundError(`Карточка с указанным _id не найдена`))
     .then((card) => {
-      if (!card) {
-        next(new NotFoundError('Карточка по указанному _id не найдена'));
-      }
       res.send(card);
     })
-    .catch(next);
+    .catch(err => next(err));
 };
 
 const dislikeCard = (req, res, next) => {

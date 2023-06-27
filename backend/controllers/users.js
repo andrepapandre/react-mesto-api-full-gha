@@ -37,12 +37,8 @@ const updateUserInfo = (req, res, next) => {
   userModel
     .findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail()
-    .then((user) => {
-      if (!user) {
-        next(new NotFoundError('Пользователь по указанному _id не найден'));
-      }
-      res.send(user);
-    }).catch((err) => {
+    .then(() => res.status(OK).send({ message: 'Изменения сохранены' }))
+    .catch((err) => {
       if (err.name === ValErr) {
         next(new BadRequest('Переданы некорректные данные при создании пользователя'));
         return;
