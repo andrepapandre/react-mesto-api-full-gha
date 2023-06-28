@@ -1,9 +1,7 @@
-import React, { useCallback } from "react";
 import successfulImage from "../image/Unionss.svg";
 import failedImage from "../image/failed.svg";
 
 export default function InfoTooltip({ boolean, isOpen, onClose }) {
-  const [message, setMessage] = React.useState("");
 
   const successfulMessage = "Вы успешно зарегистрировались!";
   const successfulAlt = "Изображение подтверждения регистрации";

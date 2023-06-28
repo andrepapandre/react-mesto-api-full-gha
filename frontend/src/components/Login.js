@@ -9,7 +9,6 @@ export const Login = ({ isLoqqed, onLogin }) => {
   });
   const [inputs, setInputs] = React.useState(userData);
 
-  const [message, setMessage] = React.useState("");
 
   function handleChange(e) {
     const value = e.target.value;

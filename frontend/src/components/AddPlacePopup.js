@@ -1,6 +1,5 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export function AddPlacePopup({ isOpen, onClose, handleAddPlaceSubmit }) {
   function handleSubmit(e) {

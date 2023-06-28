@@ -1,5 +1,4 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom"; // импортируем Routes
 
 import { Card } from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -13,8 +12,6 @@ function Main({
   handleCardLike,
   handleCardDelete,
   cards,
-  setCards,
-  loggedIn,
   email,
   onLogout,
 }) {
