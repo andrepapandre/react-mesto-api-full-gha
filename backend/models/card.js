@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const validator = require('validator');
 
-
 const card = mongoose.Schema({
   name: {
     type: String,

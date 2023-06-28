@@ -11,7 +11,6 @@ const AuthError = require('../errors/auth-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-
 const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -39,7 +38,7 @@ const createUser = (req, res, next) => {
         if (err.name === ValErr) {
           return next(new BadRequest('Переданы некорректные данные при создании пользователя'));
         }
-        next(err);
+        return next(err);
       });
   });
 };

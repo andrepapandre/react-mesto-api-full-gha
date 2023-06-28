@@ -9,7 +9,7 @@ const {
 } = require('../middlewares/validation');
 
 router.get('/', usersController.getUsers);
-router.get('/me', usersController.getUserInfo)
+router.get('/me', usersController.getUserInfo);
 router.get('/:userid', userByIdValid, usersController.getUserById);
 router.patch('/me', updateProfileValid, usersController.updateUserInfo);
 router.patch('/me/avatar', updateAvatarValid, usersController.updateAvatar);

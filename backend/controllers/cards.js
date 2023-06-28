@@ -5,18 +5,6 @@ const BadRequest = require('../errors/not-found-err');
 const cardModel = require('../models/card');
 const {
   OK,
-  // CREATED,
-  NOT_FOUND,
-  // BAD_REQUIEST,
-  // UNAUTHORIZED_ERROR,
-  FORBITTEN,
-  INTERNAL_SERVER_ERROR,
-  DocNotFound,
-  // CastErr,
-  ValErr,
-  CREATED,
-  CastErr,
-  BAD_REQUIEST,
 } = require('../statusServerName');
 
 const getCards = (req, res, next) => {
@@ -26,7 +14,7 @@ const getCards = (req, res, next) => {
     .then((cards) => {
       res.send({ cards });
     })
-    .catch((err) => next(err));;
+    .catch((err) => next(err));
 };
 
 const deleteCardbyId = (req, res, next) => {
@@ -35,10 +23,10 @@ const deleteCardbyId = (req, res, next) => {
     .orFail()
     .then((card) => {
       if (!card) {
-        next(new NotFoundError('Такой карточки нет'))
+        throw new NotFoundError('Такой карточки нет');
       }
       if (card.owner.toString() !== req.user._id) {
-        next(new ForbiddenError('Нет прав доступа'))
+        throw new ForbiddenError('Нет прав доступа');
       }
       return cardModel.findByIdAndRemove(req.params.cardid).then(() => {
         res.status(OK).send({ message: 'Карточка успешно удалена' });
@@ -48,7 +36,7 @@ const deleteCardbyId = (req, res, next) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Некоректный id'));
         return;
-      };
+      }
       next(err);
     });
 };
@@ -59,23 +47,20 @@ const createCard = (req, res, next) => {
   cardModel.create({ name, link, owner })
     .then((card) => card.populate('owner'))
     .then((card) => res.status(201).send(card))
-    .catch((err) => {
-      return next(err);
-    });
+    .catch((err) => next(err));
 };
 
 const likeCard = (req, res, next) => {
   cardModel.findByIdAndUpdate(req.params.cardid, { $addToSet: { likes: req.user } }, { new: true })
     .populate(['owner', 'likes'])
-    .orFail(new NotFoundError(`Карточка с указанным _id не найдена`))
+    .orFail(new NotFoundError('Карточка с указанным _id не найдена'))
     .then((card) => {
       res.send(card);
     })
-    .catch(err => next(err));
+    .catch((err) => next(err));
 };
 
 const dislikeCard = (req, res, next) => {
-
   cardModel.findByIdAndUpdate(req.params.cardid, { $pull: { likes: req.user._id } }, { new: true })
     .populate(['owner', 'likes'])
     .then((card) => {

@@ -58,31 +58,30 @@ const getUserInfo = (req, res, next) => {
     .catch(next);
 };
 
-const updateAvatar = (req, res, next) => {  
-  userModel 
-    .findByIdAndUpdate(req.user._id, { ...req.body }, { new: true, runValidators: true }) 
-    .orFail() 
-    .then((card) => { 
-      res.status(OK).send(card); 
-    }) 
-    .catch((err) => { 
-      if (err.name === ValErr) { 
-        next(new BadRequest('Переданы некорректные данные при создании пользователя')); 
-        return; 
-      } 
-      if (err.name === DocNotFound) { 
-        next(new NotFound('Пользователь не найден или _id пользователя некорректен')); 
-        return; 
-      } 
-      next(err); 
-    }); 
-}; 
-
+const updateAvatar = (req, res, next) => {
+  userModel
+    .findByIdAndUpdate(req.user._id, { ...req.body }, { new: true, runValidators: true })
+    .orFail()
+    .then((card) => {
+      res.status(OK).send(card);
+    })
+    .catch((err) => {
+      if (err.name === ValErr) {
+        next(new BadRequest('Переданы некорректные данные при создании пользователя'));
+        return;
+      }
+      if (err.name === DocNotFound) {
+        next(new NotFound('Пользователь не найден или _id пользователя некорректен'));
+        return;
+      }
+      next(err);
+    });
+};
 
 module.exports = {
   getUsers,
   getUserById,
   updateUserInfo,
   updateAvatar,
-  getUserInfo
+  getUserInfo,
 };
